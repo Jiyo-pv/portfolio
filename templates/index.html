@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <title>Jiyo P V | Portfolio</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: "class" }
+    </script>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Typewriter CSS -->
+    <style>
+        .typewriter-text {
+            border-right: 2px solid cyan;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            animation: typing 3s steps(40) forwards, blink .7s infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 260px } }
+        @keyframes blink { 50% { border-color: transparent } }
+
+        .glass {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .neon-border {
+            border: 1px solid rgba(0,200,255,0.55);
+            box-shadow: 0 0 10px rgba(0,200,255,0.5);
+        }
+        .neon-text { text-shadow: 0 0 10px cyan; }
+    </style>
+
+    <script>
+        function toggleTheme(){ document.documentElement.classList.toggle("dark"); }
+        function toggleMenu(){ document.getElementById("mobileMenu").classList.toggle("hidden"); }
+    </script>
+</head>
+
+<body class="bg-gray-950 dark:bg-black text-gray-200">
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 w-10/12 md:w-3/4 mx-auto glass neon-border rounded-2xl py-3 px-5 mt-4 left-1/2 -translate-x-1/2 z-50 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-cyan-300 neon-text">Jiyo P V</h1>
+
+    <div class="hidden md:flex space-x-6">
+        <a href="#about" class="hover:text-cyan-300">About</a>
+        <a href="#skills" class="hover:text-cyan-300">Skills</a>
+        <a href="#timeline" class="hover:text-cyan-300">Education</a>
+        <a href="#certifications" class="hover:text-cyan-300">Certifications</a>
+        <a href="#projects" class="hover:text-cyan-300">Projects</a>
+        <a href="#contact" class="hover:text-cyan-300">Contact</a>
+    </div>
+
+    <div class="flex md:hidden space-x-4">
+        <span onclick="toggleMenu()" class="material-icons text-cyan-300 cursor-pointer">menu</span>
+    </div>
+
+    <span onclick="toggleTheme()" class="hidden md:block material-icons text-cyan-300 cursor-pointer">dark_mode</span>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="hidden fixed top-20 w-10/12 mx-auto left-1/2 -translate-x-1/2 glass neon-border p-4 rounded-xl z-50">
+    <a href="#about" class="block py-2">About</a>
+    <a href="#skills" class="block py-2">Skills</a>
+    <a href="#timeline" class="block py-2">Education</a>
+    <a href="#certifications" class="block py-2">Certifications</a>
+    <a href="#projects" class="block py-2">Projects</a>
+    <a href="#contact" class="block py-2">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="max-w-5xl mx-auto px-5 pt-36 pb-20 text-center" data-aos="fade-up">
+
+    <!-- Avatar -->
+    <div class="flex justify-center mb-6">
+        <img src="{{ url_for('static', filename='images/avatar.png') }}"
+             class="w-40 h-40 rounded-full border-4 border-cyan-400 shadow-xl object-cover"/>
+    </div>
+
+    <!-- Typewriter Title -->
+    <h1 class="text-4xl md:text-5xl font-bold text-cyan-300 neon-text mb-4">
+        <span class="typewriter-text inline-block">
+            Hi, I'm Jiyo
+        </span>
+    </h1>
+
+    <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+        MCA Student • Python • Django • Java • Android Developer • Web Developer  
+    </p>
+
+    <!-- Buttons -->
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+
+        <!-- Resume -->
+        <a href="/download-resume"
+           class="bg-cyan-600 px-6 py-3 rounded-xl hover:bg-cyan-700 transition flex items-center">
+            <span class="material-icons mr-1">file_download</span>
+            Resume
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/jiyo-pv"
+           target="_blank"
+           class="bg-gray-800 border border-gray-600 px-6 py-3 rounded-xl hover:bg-gray-700 transition flex items-center">
+            <span class="material-icons mr-2">code</span>
+            GitHub
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/jiyo-pv"
+           target="_blank"
+           class="bg-blue-700 px-6 py-3 rounded-xl hover:bg-blue-800 transition flex items-center">
+            <span class="material-icons mr-2">work</span>
+            LinkedIn
+        </a>
+
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-5xl mx-auto px-5 py-12">
+    <h2 class="text-3xl font-semibold mb-4 border-b border-gray-700 pb-2">About Me</h2>
+    <div class="glass neon-border p-6 rounded-2xl">
+        <p>
+            Passionate MCA student with strong skills in web development, app development, 
+            databases, and UI/UX. I love building modern, clean, and tech-driven applications.
+        </p>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="max-w-5xl mx-auto px-5 py-12">
+    <h2 class="text-3xl font-semibold mb-4 border-b border-gray-700 pb-2">Skills</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="glass p-4 rounded-xl text-center neon-border">Python</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">Java</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">Django</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">Android Studio</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">MySQL</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">PHP</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">HTML & CSS</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">OracleDb</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">git</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">PostGreSQL</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">Flask</div>	
+        <div class="glass p-4 rounded-xl text-center neon-border">Flutter</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">OOPs</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">C</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">C++</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">Tailwind</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">BootStrap</div>
+        <div class="glass p-4 rounded-xl text-center neon-border">Material Design</div>
+    </div>
+</section>
+
+<!-- EDUCATION TIMELINE -->
+<section id="timeline" class="max-w-5xl mx-auto px-5 py-12">
+    <h2 class="text-3xl font-semibold mb-6 border-b border-gray-700 pb-2">Education</h2>
+
+    <div class="relative pl-10 space-y-8">
+        <div class="absolute left-4 w-1 h-full bg-cyan-400 rounded-full"></div>
+
+        <div class="glass neon-border p-5 rounded-xl relative">
+            <span class="absolute left-[-14px] top-3 w-4 h-4 bg-cyan-400 rounded-full"></span>
+            <h3 class="text-xl text-cyan-300 font-semibold">Master of Computer Applications (Ongoing)</h3>
+            <p class="text-gray-400">Expected 2027</p>
+        </div>
+
+        <div class="glass neon-border p-5 rounded-xl relative">
+            <span class="absolute left-[-14px] top-3 w-4 h-4 bg-cyan-400 rounded-full"></span>
+            <h3 class="text-xl text-cyan-300 font-semibold">Bachelor of Computer Applications</h3>
+            <p class="text-gray-400">Graduated: 2025 • CGPA: 8.17</p>
+        </div>
+    </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications" class="max-w-5xl mx-auto px-5 py-12">
+    <h2 class="text-3xl font-semibold mb-6 border-b border-gray-700 pb-2">Certifications</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="glass neon-border p-5 rounded-xl">
+            <h3 class="text-xl text-cyan-300 font-semibold">RedTeam – Cyber Security Analyst</h3>
+        </div>
+
+        <div class="glass neon-border p-5 rounded-xl">
+            <h3 class="text-xl text-cyan-300 font-semibold">Flutter Development Workshop</h3>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="max-w-5xl mx-auto px-5 py-12">
+    <h2 class="text-3xl font-semibold mb-6 border-b border-gray-700 pb-2">Projects</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- Project 1 -->
+        <div class="glass neon-border p-5 rounded-2xl transition hover:scale-[1.03]">
+            <img src="{{ url_for('static', filename='images/project1.png') }}" class="rounded-xl mb-3"/>
+            <h3 class="text-xl font-bold text-cyan-300">Library Network System</h3>
+            <p class="text-gray-300 mt-2 text-sm">
+                A Django-based library system + Android app for browsing, managing, and sharing books.
+            </p>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="glass neon-border p-5 rounded-2xl transition hover:scale-[1.03]">
+            <img src="{{ url_for('static', filename='images/project2.png') }}" class="rounded-xl mb-3"/>
+            <h3 class="text-xl font-bold text-cyan-300">Video Game Store</h3>
+            <p class="text-gray-300 mt-2 text-sm">
+                E-commerce game shop using AJAX + Fetch API with device compatibility checks.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="max-w-5xl mx-auto px-5 py-16 text-center">
+    <h2 class="text-3xl font-semibold mb-6">Contact Me</h2>
+
+    <form action="https://formsubmit.co/jiyopv21@gmail.com"
+          method="POST"
+          class="max-w-lg mx-auto glass neon-border p-6 rounded-2xl">
+
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_next" value="http://localhost:5000/success">
+
+        <input name="name" placeholder="Your Name" required
+               class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700"/>
+
+        <input name="email" type="email" placeholder="Email" required
+               class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700"/>
+
+        <textarea name="message" placeholder="Message" required
+                  class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700"></textarea>
+
+        <button class="w-full bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl transition">
+            Send Message
+        </button>
+    </form>
+</section>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init();</script>
+
+</body>
+</html>
