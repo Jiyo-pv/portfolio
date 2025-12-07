@@ -1,266 +1,656 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark">
 <head>
-    <meta name="description" content="Portfolio of JIYO P V">
-    <meta property="og:title" content="JIYO P V — Portfolio">
-    <meta property="og:image" content="/static/images/preview.png">
-    <meta property="og:description" content="Developer portfolio built with Flask.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta charset="UTF-8" />
-    <title>Jiyo P V | Portfolio</title>
+  <title>Jiyo P V | Developer Portfolio</title>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { darkMode: "class" }
-    </script>
+  <meta name="description" content="Portfolio of JIYO P V — MCA student, Python / Django / Android / Web Developer.">
+  <meta property="og:title" content="JIYO P V — Portfolio">
+  <meta property="og:description" content="Developer portfolio built with Flask.">
+  <meta property="og:image" content="/static/images/preview.png">
+  <meta property="og:type" content="website">
 
-    <!-- Bootstrap Grid (layout only, no styling conflicts) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css" rel="stylesheet">
-
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- AOS Animations -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Custom Effects -->
-    <style>
-        .typewriter-text {
-            border-right: 2px solid cyan;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 0;
-            animation: typing 3s steps(40) forwards, blink .7s infinite;
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Poppins", "system-ui", "sans-serif"],
+            mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular"]
+          },
+          colors: {
+            "bg-main": "#020617",
+          }
         }
-        @keyframes typing { from { width: 0 } to { width: 260px } }
-        @keyframes blink { 50% { border-color: transparent } }
+      }
+    }
+  </script>
 
-        .glass {
-            background: rgba(255,255,255,0.06);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.12);
-        }
-        .neon-border {
-            border: 1px solid rgba(0,200,255,0.45);
-            box-shadow: 0 0 10px rgba(0,200,255,0.4);
-            transition: 0.3s ease;
-        }
-        .neon-border:hover {
-            box-shadow: 0 0 20px rgba(0,200,255,0.8);
-            transform: scale(1.03);
-        }
-        .neon-text { text-shadow: 0 0 10px cyan; }
-    </style>
+  <!-- Bootstrap Grid Only (for layout if needed) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css" rel="stylesheet">
 
-    <script>
-        function toggleTheme(){ document.documentElement.classList.toggle("dark"); }
-        function toggleMenu(){ document.getElementById("mobileMenu").classList.toggle("hidden"); }
-    </script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Neon glassmorphism */
+    .glass {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+
+    .neon-border {
+      border: 1px solid rgba(34, 211, 238, 0.7);
+      box-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+    }
+
+    .neon-text {
+      text-shadow: 0 0 12px rgba(34, 211, 238, 0.9);
+    }
+
+    /* Subtle grid background */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(30, 64, 175, 0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 64, 175, 0.18) 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: -1px -1px;
+    }
+
+    /* Typewriter */
+    .typewriter {
+      border-right: 2px solid cyan;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 3s steps(40) forwards, blink .7s infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 260px }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    /* Custom cursor */
+    #cursor {
+      position: fixed;
+      width: 26px;
+      height: 26px;
+      border-radius: 9999px;
+      border: 1px solid rgba(34, 211, 238, 0.9);
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.7);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 50;
+      mix-blend-mode: screen;
+    }
+
+    a, button {
+      cursor: none; /* to emphasise custom cursor */
+    }
+
+    body {
+      cursor: none;
+    }
+
+    /* Mobile fallback: show default cursor on very small screens */
+    @media (max-width: 768px) {
+      #cursor { display: none; }
+      body, a, button { cursor: auto; }
+    }
+  </style>
+
+  <script>
+    function toggleTheme() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function toggleMenu() {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    }
+  </script>
 </head>
 
-<body class="bg-gray-950 dark:bg-black text-gray-200">
+<body class="bg-bg-main text-slate-100 relative overflow-x-hidden">
 
-<!-- NAVBAR -->
-<nav class="fixed top-0 w-11/12 md:w-4/5 lg:w-3/5 mx-auto glass neon-border rounded-2xl py-3 px-5 mt-4 left-1/2 -translate-x-1/2 z-50 flex justify-between items-center animate-fadeIn">
-    <h1 class="text-xl font-bold text-cyan-300 neon-text">Jiyo P V</h1>
+  <!-- Custom Cursor -->
+  <div id="cursor"></div>
 
-    <!-- Desktop Menu -->
-    <div class="hidden md:flex space-x-6">
-        <a href="#about" class="hover:text-cyan-300 transition">About</a>
-        <a href="#skills" class="hover:text-cyan-300 transition">Skills</a>
-        <a href="#timeline" class="hover:text-cyan-300 transition">Education</a>
-        <a href="#certifications" class="hover:text-cyan-300 transition">Certifications</a>
-        <a href="#projects" class="hover:text-cyan-300 transition">Projects</a>
-        <a href="#contact" class="hover:text-cyan-300 transition">Contact</a>
+  <!-- Animated Background Layer -->
+  <div class="pointer-events-none fixed inset-0 opacity-40">
+    <div class="grid-bg w-full h-full"></div>
+    <div class="absolute -top-40 -left-32 w-80 h-80 bg-cyan-500/20 blur-3xl rounded-full"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/20 blur-3xl rounded-full"></div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 w-11/12 md:w-4/5 lg:w-3/5 glass neon-border rounded-2xl
+              py-3 px-5 z-40 flex items-center justify-between transition-all duration-300" id="navbar">
+    <div class="flex items-center gap-2">
+      <span class="material-icons text-cyan-400">terminal</span>
+      <div class="leading-tight">
+        <p class="text-xs text-slate-400 font-mono">dev@jiyo</p>
+        <h1 class="text-lg font-semibold neon-text tracking-tight">JIYO P V</h1>
+      </div>
     </div>
 
-    <!-- Mobile Menu Button -->
-    <div class="flex md:hidden">
-        <span onclick="toggleMenu()" class="material-icons text-cyan-300 cursor-pointer">menu</span>
+    <!-- Desktop Nav -->
+    <div class="hidden md:flex items-center gap-6 text-sm font-mono">
+      <a href="#about" class="hover:text-cyan-300 transition transform hover:scale-105">about()</a>
+      <a href="#skills" class="hover:text-cyan-300 transition transform hover:scale-105">skills()</a>
+      <a href="#timeline" class="hover:text-cyan-300 transition transform hover:scale-105">education()</a>
+      <a href="#certifications" class="hover:text-cyan-300 transition transform hover:scale-105">certs()</a>
+      <a href="#projects" class="hover:text-cyan-300 transition transform hover:scale-105">projects()</a>
+      <a href="#contact" class="hover:text-cyan-300 transition transform hover:scale-105">contact()</a>
     </div>
 
-    <!-- Theme Toggle -->
-    <span onclick="toggleTheme()" class="hidden md:block material-icons text-cyan-300 cursor-pointer">dark_mode</span>
-</nav>
+    <!-- Right side controls -->
+    <div class="flex items-center gap-3">
+      <button onclick="toggleTheme()" class="hidden md:inline-flex items-center justify-center w-8 h-8 
+                     rounded-full border border-slate-600 hover:border-cyan-400 text-cyan-300 text-sm">
+        <span class="material-icons text-base">dark_mode</span>
+      </button>
 
-<!-- Mobile Menu -->
-<div id="mobileMenu" class="hidden fixed top-20 w-10/12 mx-auto left-1/2 -translate-x-1/2 glass neon-border p-4 rounded-xl z-50 animate-fadeIn">
-    <a href="#about" class="block py-2">About</a>
-    <a href="#skills" class="block py-2">Skills</a>
-    <a href="#timeline" class="block py-2">Education</a>
-    <a href="#certifications" class="block py-2">Certifications</a>
-    <a href="#projects" class="block py-2">Projects</a>
-    <a href="#contact" class="block py-2">Contact</a>
-</div>
-
-<!-- HERO -->
-<section class="max-w-5xl mx-auto px-5 pt-36 pb-20 text-center" data-aos="fade-up">
-
-    <div class="flex justify-center mb-6">
-        <img src="{{ url_for('static', filename='images/avatar.png') }}"
-             class="w-40 h-40 rounded-full border-4 border-cyan-400 shadow-xl object-cover animate-scaleIn"/>
+      <button class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-600
+                     hover:border-cyan-400 text-cyan-300" onclick="toggleMenu()">
+        <span class="material-icons">menu</span>
+      </button>
     </div>
+  </nav>
 
-    <h1 class="text-4xl md:text-5xl font-bold text-cyan-300 neon-text mb-4">
-        <span class="typewriter-text inline-block">Hi, I'm Jiyo</span>
-    </h1>
+  <!-- Mobile Menu -->
+  <div id="mobileMenu"
+       class="hidden fixed top-20 inset-x-0 mx-auto w-[90%] max-w-md glass neon-border p-4 rounded-xl z-30 text-sm font-mono">
+    <a href="#about" class="block py-2" onclick="toggleMenu()">about()</a>
+    <a href="#skills" class="block py-2" onclick="toggleMenu()">skills()</a>
+    <a href="#timeline" class="block py-2" onclick="toggleMenu()">education()</a>
+    <a href="#certifications" class="block py-2" onclick="toggleMenu()">certs()</a>
+    <a href="#projects" class="block py-2" onclick="toggleMenu()">projects()</a>
+    <a href="#contact" class="block py-2" onclick="toggleMenu()">contact()</a>
+  </div>
 
-    <p class="text-gray-300 text-lg max-w-2xl mx-auto animate-fadeInSlow">
-        MCA Student • Python • Django • Java • Android Developer • Web Developer  
-    </p>
+  <main class="relative z-10">
 
-    <div class="mt-8 flex flex-wrap justify-center gap-4">
+    <!-- HERO -->
+    <section id="home" class="min-h-[90vh] flex items-center">
+      <div class="max-w-6xl mx-auto px-5 pt-24 md:pt-32">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
 
-        <a href="/download-resume"
-           class="bg-cyan-600 px-6 py-3 rounded-xl hover:bg-cyan-700 transition flex items-center animate-pop">
-            <span class="material-icons mr-1">file_download</span> Resume
-        </a>
+          <!-- Left: Text -->
+          <div class="space-y-5 hero-left">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-cyan-300/80">
+              &lt;MCA Student / Developer / Tech Enthusiast /&gt;
+            </p>
 
-        <a href="https://github.com/jiyo-pv"
-           target="_blank"
-           class="bg-gray-800 border border-gray-600 px-6 py-3 rounded-xl hover:bg-gray-700 transition flex items-center animate-pop">
-            <span class="material-icons mr-2">code</span> GitHub
-        </a>
+            <h1 class="hero-title text-3xl md:text-5xl font-bold leading-tight">
+              Building <span class="text-cyan-300">modern</span> &
+              <span class="text-indigo-400">performant</span> experiences on the web.
+            </h1>
 
-        <a href="https://www.linkedin.com/in/jiyo-pv"
-           target="_blank"
-           class="bg-blue-700 px-6 py-3 rounded-xl hover:bg-blue-800 transition flex items-center animate-pop">
-            <span class="material-icons mr-2">work</span> LinkedIn
-        </a>
-    </div>
-</section>
+            <p class="hero-subtitle text-slate-300 text-sm md:text-base max-w-xl">
+              I’m <span class="font-semibold text-cyan-300">Jiyo P V</span>, an MCA student with a passion for
+              Python, Django, Android, and full-stack web development. I enjoy turning ideas into clean, functional
+              and visually engaging applications.
+            </p>
 
-<!-- ABOUT -->
-<section id="about" class="max-w-5xl mx-auto px-5 py-12" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-4 border-b border-gray-700 pb-2">About Me</h2>
-    <div class="glass neon-border p-6 rounded-2xl">
-        <p>
-            Passionate MCA student with strong skills in web development, app development, 
-            databases, and UI/UX. I love building modern, clean, and tech-driven applications.
-        </p>
-    </div>
-</section>
+            <div class="hero-console font-mono text-xs bg-black/60 border border-slate-700 rounded-xl p-3 text-left">
+              <p class="text-cyan-300">jiyo@portfolio:~$ <span class="typewriter inline-block">python dev_profile.py</span></p>
+              <p class="mt-2 text-emerald-300">
+                ▶ Stack: Python, Django, Flask, Android, Tailwind, Bootstrap, MySQL
+              </p>
+            </div>
 
-<!-- SKILLS -->
-<section id="skills" class="max-w-5xl mx-auto px-5 py-12" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-4 border-b border-gray-700 pb-2">Skills</h2>
-    
-    <div class="row g-3">
-        {% for skill in [
+            <div class="hero-buttons flex flex-wrap gap-3 pt-2">
+              <a href="{{ url_for('download_resume') }}"
+                 class="inline-flex items-center px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400
+                        text-slate-950 font-medium shadow-lg shadow-cyan-500/30 transition transform hover:-translate-y-0.5">
+                <span class="material-icons mr-2 text-sm">file_download</span>
+                Download Resume
+              </a>
+
+              <a href="#projects"
+                 class="inline-flex items-center px-6 py-3 rounded-xl border border-slate-600
+                        hover:border-cyan-400 text-slate-100 font-medium transition transform hover:-translate-y-0.5">
+                <span class="material-icons mr-2 text-sm">code</span>
+                View Projects
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Avatar & card -->
+          <div class="hero-right relative flex justify-center md:justify-end">
+            <div class="relative w-64 md:w-72">
+              <div class="absolute -inset-6 bg-gradient-to-tr from-cyan-500/30 via-indigo-500/20 to-purple-500/30
+                          blur-3xl rounded-[2.5rem]"></div>
+
+              <div class="relative glass neon-border rounded-[2rem] p-5 flex flex-col items-center gap-4 hero-card">
+                <img src="{{ url_for('static', filename='images/avatar.png') }}"
+                     alt="Profile photo of Jiyo P V"
+                     class="hero-avatar w-32 h-32 rounded-full border-4 border-cyan-400 object-cover shadow-xl" />
+
+                <div class="text-center">
+                  <p class="text-xs font-mono text-slate-400 mb-1">/dev/jiyo</p>
+                  <h2 class="text-lg font-semibold">Full-Stack Developer</h2>
+                  <p class="text-xs text-slate-400">
+                    Python • Django • Flask • Android • Web
+                  </p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 text-[0.65rem] font-mono">
+                  <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-cyan-400/50">Python</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-cyan-400/50">Django</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-cyan-400/50">Android</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-cyan-400/50">Tailwind</span>
+                </div>
+
+                <div class="flex justify-center gap-4 text-slate-300 text-sm pt-1">
+                  <a href="https://github.com/jiyo-pv" target="_blank" class="hover:text-cyan-300">GitHub</a>
+                  <a href="https://www.linkedin.com/in/jiyo-pv" target="_blank" class="hover:text-cyan-300">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-16">
+      <div class="max-w-5xl mx-auto px-5">
+        <div class="section-header mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-cyan-400"></span>
+          <h2 class="text-xl md:text-2xl font-semibold font-mono">about_me()</h2>
+        </div>
+
+        <div class="glass neon-border rounded-2xl p-6 md:p-8 about-card">
+          <p class="text-slate-200 text-sm md:text-base leading-relaxed">
+            I'm an <span class="text-cyan-300 font-semibold">MCA student</span> with a strong foundation in
+            computer science and hands-on experience in building web and mobile applications.
+            I love working with Python, Django, Android Studio and modern frontend tools like Tailwind & Bootstrap.
+          </p>
+          <p class="text-slate-300 text-sm md:text-base mt-4">
+            I enjoy solving problems, designing user-centric interfaces, and continuously learning new technologies.
+            My goal is to build scalable, maintainable and visually engaging applications that make an impact.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="py-16">
+      <div class="max-w-5xl mx-auto px-5">
+        <div class="section-header mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-cyan-400"></span>
+          <h2 class="text-xl md:text-2xl font-semibold font-mono">skills()</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 skills-grid">
+          {% for skill in [
             "Python","Java","Django","Android Studio","MySQL","PHP",
-            "HTML & CSS","OracleDb","git","PostGreSQL","Flask","Flutter",
-            "OOPs","C","C++","Tailwind","Bootstrap","Material Design"
-        ] %}
-        <div class="col-6 col-md-4">
-            <div class="glass neon-border p-4 rounded-xl text-center hover:scale-105 transition">
-                {{ skill }}
+            "HTML & CSS","OracleDB","Git","PostgreSQL","Flask","Flutter",
+            "OOP","C","C++","Tailwind","Bootstrap","Material Design"
+          ] %}
+          <div class="glass skill-card rounded-xl px-4 py-3 text-center text-sm font-mono text-slate-200
+                      hover:border-cyan-400 hover:text-cyan-200 transition">
+            {{ skill }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="timeline" class="py-16">
+      <div class="max-w-5xl mx-auto px-5">
+        <div class="section-header mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-cyan-400"></span>
+          <h2 class="text-xl md:text-2xl font-semibold font-mono">education()</h2>
+        </div>
+
+        <div class="relative pl-8 space-y-8">
+          <div class="absolute left-1.5 top-0 w-[2px] h-full bg-gradient-to-b from-cyan-400 to-indigo-500"></div>
+
+          <div class="glass neon-border rounded-xl p-5 relative edu-card">
+            <span class="absolute -left-2 top-4 w-3 h-3 rounded-full bg-cyan-400"></span>
+            <h3 class="text-lg font-semibold text-cyan-300">Master of Computer Applications (MCA)</h3>
+            <p class="text-xs font-mono text-slate-400 mt-1">Ongoing • Expected 2027</p>
+            <p class="text-sm text-slate-200 mt-3">
+              Deepening my knowledge in software engineering, advanced programming,
+              algorithms, and full-stack development.
+            </p>
+          </div>
+
+          <div class="glass neon-border rounded-xl p-5 relative edu-card">
+            <span class="absolute -left-2 top-4 w-3 h-3 rounded-full bg-cyan-400"></span>
+            <h3 class="text-lg font-semibold text-cyan-300">Bachelor of Computer Applications (BCA)</h3>
+            <p class="text-xs font-mono text-slate-400 mt-1">Graduated 2025 • CGPA: 8.17</p>
+            <p class="text-sm text-slate-200 mt-3">
+              Built a strong foundation in programming, databases, networking and software development principles.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications" class="py-16">
+      <div class="max-w-5xl mx-auto px-5">
+        <div class="section-header mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-cyan-400"></span>
+          <h2 class="text-xl md:text-2xl font-semibold font-mono">certifications()</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 cert-grid">
+          <div class="glass neon-border rounded-xl p-5 cert-card">
+            <h3 class="text-lg text-cyan-300 font-semibold">RedTeam — Cyber Security Analyst</h3>
+            <p class="text-sm text-slate-300 mt-2">
+              Gained practical exposure to security fundamentals, threat analysis, and ethical hacking concepts.
+            </p>
+          </div>
+
+          <div class="glass neon-border rounded-xl p-5 cert-card">
+            <h3 class="text-lg text-cyan-300 font-semibold">Flutter Development Workshop</h3>
+            <p class="text-sm text-slate-300 mt-2">
+              Built cross-platform mobile UI components and learned modern app development workflows.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="py-16">
+      <div class="max-w-5xl mx-auto px-5">
+        <div class="section-header mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-cyan-400"></span>
+          <h2 class="text-xl md:text-2xl font-semibold font-mono">projects()</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 project-grid">
+
+          <!-- Project 1: LIBRARY SYSTEM -->
+          <article class="glass neon-border rounded-2xl p-5 flex flex-col gap-3 project-card">
+            <img src="{{ url_for('static', filename='images/project1.png') }}"
+                 alt="Library Network System screenshot"
+                 class="rounded-xl mb-1 object-cover h-40 w-full" />
+            <h3 class="text-lg font-semibold text-cyan-300">Library Network System</h3>
+            <p class="text-xs font-mono text-slate-400">
+              Django • Android • REST • SQLite
+            </p>
+            <p class="text-sm text-slate-200">
+              A library network platform with a web backend and Android client for browsing, managing and sharing books
+              across institutions.
+            </p>
+            <div class="flex flex-wrap gap-2 text-[0.65rem] font-mono mt-1">
+              <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">Django</span>
+              <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">Android</span>
+              <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">REST API</span>
             </div>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="timeline" class="max-w-5xl mx-auto px-5 py-12" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-6 border-b border-gray-700 pb-2">Education</h2>
-
-    <div class="relative pl-10 space-y-8">
-
-        <div class="absolute left-4 w-1 h-full bg-cyan-400 rounded-full"></div>
-
-        <div class="glass neon-border p-5 rounded-xl relative animate-fadeInSlow">
-            <span class="absolute left-[-14px] top-3 w-4 h-4 bg-cyan-400 rounded-full"></span>
-            <h3 class="text-xl text-cyan-300 font-semibold">Master of Computer Applications (Ongoing)</h3>
-            <p class="text-gray-400">Expected 2027</p>
-        </div>
-
-        <div class="glass neon-border p-5 rounded-xl relative animate-fadeInSlow" data-aos-delay="50">
-            <span class="absolute left-[-14px] top-3 w-4 h-4 bg-cyan-400 rounded-full"></span>
-            <h3 class="text-xl text-cyan-300 font-semibold">Bachelor of Computer Applications</h3>
-            <p class="text-gray-400">Graduated: 2025 • CGPA: 8.17</p>
-        </div>
-    </div>
-</section>
-
-<!-- CERTIFICATIONS -->
-<section id="certifications" class="max-w-5xl mx-auto px-5 py-12" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-6 border-b border-gray-700 pb-2">Certifications</h2>
-
-    <div class="row g-4">
-        <div class="col-md-6">
-            <div class="glass neon-border p-5 rounded-xl animate-card">
-                <h3 class="text-xl text-cyan-300 font-semibold">RedTeam – Cyber Security Analyst</h3>
+            <div class="flex gap-3 mt-3">
+              <a href="https://github.com/Jiyo-pv/LIBRARY-SYSTEM"
+                 target="_blank"
+                 class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-400
+                        text-slate-50 text-sm font-medium transition transform hover:-translate-y-0.5">
+                <span class="material-icons text-sm mr-1">code</span>
+                View Code
+              </a>
             </div>
-        </div>
+          </article>
 
-        <div class="col-md-6">
-            <div class="glass neon-border p-5 rounded-xl animate-card">
-                <h3 class="text-xl text-cyan-300 font-semibold">Flutter Development Workshop</h3>
+          <!-- Project 2: Video Game Store -->
+          <article class="glass neon-border rounded-2xl p-5 flex flex-col gap-3 project-card">
+            <img src="{{ url_for('static', filename='images/project2.png') }}"
+                 alt="Video Game Store screenshot"
+                 class="rounded-xl mb-1 object-cover h-40 w-full" />
+            <h3 class="text-lg font-semibold text-cyan-300">Video Game Store</h3>
+            <p class="text-xs font-mono text-slate-400">
+              JavaScript • AJAX • Device Detection
+            </p>
+            <p class="text-sm text-slate-200">
+              An e-commerce style game store using AJAX & Fetch API, including device compatibility checks and dynamic content.
+            </p>
+            <div class="flex flex-wrap gap-2 text-[0.65rem] font-mono mt-1">
+              <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">HTML/CSS</span>
+              <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">JavaScript</span>
+              <span class="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700">AJAX</span>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects" class="max-w-5xl mx-auto px-5 py-12" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-6 border-b border-gray-700 pb-2">Projects</h2>
-
-    <div class="row g-4">
-
-        <div class="col-md-6">
-            <div class="glass neon-border p-5 rounded-2xl transition hover:scale-[1.04] shadow-xl animate-card">
-                <img src="{{ url_for('static', filename='images/project1.png') }}" class="rounded-xl mb-3"/>
-                <h3 class="text-xl font-bold text-cyan-300">Library Network System</h3>
-                <p class="text-gray-300 mt-2 text-sm">
-                    Django + Android system for browsing & managing books.
-                </p>
+            <div class="flex gap-3 mt-3">
+              <a href="https://github.com/Jiyo-pv"
+                 target="_blank"
+                 class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-400
+                        text-slate-50 text-sm font-medium transition transform hover:-translate-y-0.5">
+                <span class="material-icons text-sm mr-1">code</span>
+                View Code
+              </a>
             </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-16">
+      <div class="max-w-5xl mx-auto px-5">
+        <div class="section-header mb-8 flex items-center gap-3">
+          <span class="h-px w-10 bg-cyan-400"></span>
+          <h2 class="text-xl md:text-2xl font-semibold font-mono">contact()</h2>
         </div>
 
-        <div class="col-md-6">
-            <div class="glass neon-border p-5 rounded-2xl transition hover:scale-[1.04] shadow-xl animate-card">
-                <img src="{{ url_for('static', filename='images/project2.png') }}" class="rounded-xl mb-3"/>
-                <h3 class="text-xl font-bold text-cyan-300">Video Game Store</h3>
-                <p class="text-gray-300 mt-2 text-sm">
-                    E-commerce system using AJAX + Fetch API with compatibility checks.
-                </p>
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <div class="space-y-3 text-sm text-slate-300">
+            <p>
+              Have an opportunity, idea or just want to say hi?  
+              Feel free to drop a message — I’m always open to collaborations, internships,
+              and interesting projects.
+            </p>
+            <p class="font-mono text-xs">
+              <span class="text-cyan-300">email:</span> jiyopv21@gmail.com
+            </p>
+            <p class="font-mono text-xs">
+              <span class="text-cyan-300">github:</span> github.com/jiyo-pv
+            </p>
+            <p class="font-mono text-xs">
+              <span class="text-cyan-300">linkedin:</span> linkedin.com/in/jiyo-pv
+            </p>
+          </div>
+
+          <form
+            action="https://formsubmit.co/jiyopv21@gmail.com"
+            method="POST"
+            class="glass neon-border rounded-2xl p-6 md:p-7 space-y-3 contact-form"
+          >
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="box">
+            <input type="hidden" name="_next" value="{{ url_for('success', _external=True) }}">
+
+            <div>
+              <label class="block text-xs font-mono mb-1 text-slate-300">Name</label>
+              <input
+                name="name"
+                placeholder="Your Name"
+                required
+                class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none
+                       focus:border-cyan-400"
+              />
             </div>
+
+            <div>
+              <label class="block text-xs font-mono mb-1 text-slate-300">Email</label>
+              <input
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none
+                       focus:border-cyan-400"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono mb-1 text-slate-300">Message</label>
+              <textarea
+                name="message"
+                placeholder="Tell me a bit about what you have in mind..."
+                required
+                rows="4"
+                class="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-sm outline-none
+                       focus:border-cyan-400"
+              ></textarea>
+            </div>
+
+            <button
+              class="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl bg-cyan-500
+                     hover:bg-cyan-400 text-slate-950 text-sm font-semibold shadow-lg shadow-cyan-500/25
+                     transition transform hover:-translate-y-0.5"
+            >
+              <span class="material-icons text-sm mr-2">send</span>
+              Send Message
+            </button>
+          </form>
         </div>
+      </div>
+    </section>
 
-    </div>
-</section>
+  </main>
 
-<!-- CONTACT -->
-<section id="contact" class="max-w-5xl mx-auto px-5 py-16 text-center" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-6">Contact Me</h2>
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800 py-4 text-center text-[0.7rem] text-slate-500 font-mono">
+    &copy; {{ current_year if current_year is defined else "2025" }} JIYO P V — Built with Flask, Tailwind, GSAP.
+  </footer>
 
-    <form action="https://formsubmit.co/jiyopv21@gmail.com"
-          method="POST"
-          class="max-w-lg mx-auto glass neon-border p-6 rounded-2xl animate-fadeInSlow">
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_next" value="http://localhost:5000/success">
+  <script>
+    // Custom cursor with GSAP
+    const cursor = document.getElementById("cursor");
 
-        <input name="name" placeholder="Your Name" required
-               class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700"/>
+    window.addEventListener("pointermove", (e) => {
+      gsap.to(cursor, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.15,
+        ease: "power2.out"
+      });
+    });
 
-        <input name="email" type="email" placeholder="Email" required
-               class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700"/>
+    // Slight grow on hover targets
+    const hoverTargets = document.querySelectorAll("a, button, .project-card, .skill-card");
+    hoverTargets.forEach(el => {
+      el.addEventListener("mouseenter", () => {
+        gsap.to(cursor, { scale: 1.8, duration: 0.2, borderColor: "rgba(129, 230, 217, 1)" });
+      });
+      el.addEventListener("mouseleave", () => {
+        gsap.to(cursor, { scale: 1, duration: 0.2, borderColor: "rgba(34, 211, 238, 0.9)" });
+      });
+    });
 
-        <textarea name="message" placeholder="Message" required
-                  class="w-full p-3 mb-3 rounded-lg bg-gray-900 border border-gray-700"></textarea>
+    gsap.registerPlugin(ScrollTrigger);
 
-        <button class="w-full bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl transition">
-            Send Message
-        </button>
-    </form>
-</section>
+    // Hero entrance
+    const heroTl = gsap.timeline();
+    heroTl
+      .from("#navbar", { y: -40, opacity: 0, duration: 0.6, ease: "power2.out" })
+      .from(".hero-left", { x: -40, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.3")
+      .from(".hero-right", { x: 40, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.5")
+      .from(".hero-buttons a", {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "power2.out"
+      }, "-=0.4");
 
-<!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>AOS.init({ duration: 900, delay: 50 });</script>
+    // Floating avatar glow
+    gsap.to(".hero-avatar", {
+      scale: 1.03,
+      duration: 2.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut"
+    });
+
+    // Navbar on scroll
+    ScrollTrigger.create({
+      start: "top top",
+      end: 99999,
+      onUpdate: (self) => {
+        const scale = self.scroll() > 30 ? 0.97 : 1;
+        const shadow = self.scroll() > 30 ? "0 0 24px rgba(34,211,238,0.6)" : "0 0 18px rgba(34,211,238,0.45)";
+        gsap.to("#navbar", {
+          scale: scale,
+          boxShadow: shadow,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      }
+    });
+
+    // Section headers
+    gsap.utils.toArray(".section-header").forEach(header => {
+      gsap.from(header, {
+        scrollTrigger: {
+          trigger: header,
+          start: "top 80%",
+        },
+        opacity: 0,
+        x: -20,
+        duration: 0.6,
+        ease: "power2.out"
+      });
+    });
+
+    // Generic card animations
+    gsap.utils.toArray(".glass").forEach((card) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: "power2.out"
+      });
+    });
+
+    // Project cards emphasis
+    gsap.utils.toArray(".project-card").forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 90%"
+        },
+        opacity: 0,
+        y: 40,
+        scale: 0.95,
+        duration: 0.7,
+        delay: i * 0.05,
+        ease: "power2.out"
+      });
+    });
+
+  </script>
 
 </body>
 </html>
