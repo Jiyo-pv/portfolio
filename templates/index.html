@@ -135,7 +135,7 @@
         {% for skill in [
             "Python","Java","Django","Android Studio","MySQL","PHP",
             "HTML","OracleDb","git","PostGreSQL","Flask","Flutter",
-            "OOPs","C","C++","Tailwind","Bootstrap  CSS","Material Design"
+            "OOPs","C","C++","Tailwind","Bootstrap CSS","Material Design"
         ] %}
         <div class="col-6 col-md-4">
            <div class="skill glass neon-border p-4 rounded-xl text-center hover:scale-105 transition cursor-pointer"
@@ -362,14 +362,14 @@ const skillFallbacks = {
     "CSS": "CSS is used to style and visually format HTML elements.",
     "PHP": "PHP is a server-side scripting language used to build dynamic websites.",
     "MySQL": "MySQL is a popular relational database management system.",
-    "PostgreSQL": "PostgreSQL is an advanced open-source relational database known for reliability and robust features.",
+    "PostGreSQL": "PostgreSQL is an advanced open-source relational database known for reliability and robust features.",
     "OracleDb": "Oracle Database is a multi-model database system widely used for enterprise applications.",
     "Git": "Git is a version control system that tracks code changes and enables collaboration.",
     "Android Studio": "Android Studio is the official IDE for Android app development.",
     "Flutter": "Flutter is a Google UI toolkit for building cross-platform apps with a single codebase.",
-    "OOP": "Object-Oriented Programming is a programming model based on classes and objects.",
+    "OOPs": "Object-Oriented Programming is a programming model based on classes and objects.",
     "Tailwind": "Tailwind CSS is a utility-first CSS framework that enables rapid UI design.",
-    "Bootstrap": "Bootstrap is a popular CSS framework for building responsive and mobile-first websites.",
+    "Bootstrap CSS": "Bootstrap is a popular CSS framework for building responsive and mobile-first websites.",
     "Material Design": "Material Design is Google’s design system for building visually consistent user interfaces."
 };
 
@@ -380,13 +380,28 @@ async function fetchSkillInfo(skill) {
         const response = await fetch(url);
         const data = await response.json();
 
-        if (data.extract) return data.extract;
+        let text = data.extract || "";
 
-        return "No information available for this skill.";
+        // Detect if this is CS-related
+        const techWords = [
+            "programming", "software", "computer", "framework", "library",
+            "language", "web", "developer", "database", "API", "IDE", "coding"
+        ];
+
+        const isTech = techWords.some(word => text.toLowerCase().includes(word));
+
+        // If Wikipedia result is unrelated → use fallback
+        if (!isTech || text.length < 40) {
+            return skillFallbacks[skill] || "No CS-related information found.";
+        }
+
+        return text;
+
     } catch (error) {
-        return "Failed to load info. Please check your connection.";
+        return skillFallbacks[skill] || "Failed to load information.";
     }
 }
+
 
 document.querySelectorAll(".skill").forEach(box => {
     box.addEventListener("click", async () => {
