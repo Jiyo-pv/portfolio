@@ -269,28 +269,26 @@
 <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.birds.min.js"></script>
 
 <script>
-// Initialize VANTA Birds
-VANTA.BIRDS({
-  el: "#vanta-bg",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
+const isMobile = window.innerWidth < 768;
 
-  backgroundColor: 0x020617,
-  color1: 0x22d3ee,
-  color2: 0x38bdf8,
-
-  birdSize: 1.40,
-  wingSpan: 22.00,
-  speedLimit: 4.00,
-  separation: 30.00,
-  alignment: 30.00,
-  cohesion: 20.00,
-  quantity: 4
-});
+if (!isMobile) {
+    // Desktop → Load Birds + Three.js
+    VANTA.BIRDS({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        backgroundColor: 0x020617,
+        color1: 0x22d3ee,
+        color2: 0x38bdf8,
+        quantity: 4
+    });
+} else {
+    // Mobile → Disable animated background
+    document.getElementById("vanta-bg").style.background = "#020617";
+}
 </script>
+
 
 <!-- GSAP SCRAMBLE TEXT ANIMATION -->
 <script>
