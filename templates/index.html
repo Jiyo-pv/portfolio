@@ -359,12 +359,11 @@ const skillFallbacks = {
     "Django": "Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design.",
     "Flask": "Flask is a lightweight Python web framework ideal for small applications and APIs.",
     "HTML": "HTML is the standard markup language for structuring web pages.",
-    "CSS": "CSS is used to style and visually format HTML elements.",
     "PHP": "PHP is a server-side scripting language used to build dynamic websites.",
     "MySQL": "MySQL is a popular relational database management system.",
     "PostGreSQL": "PostgreSQL is an advanced open-source relational database known for reliability and robust features.",
     "OracleDb": "Oracle Database is a multi-model database system widely used for enterprise applications.",
-    "Git": "Git is a version control system that tracks code changes and enables collaboration.",
+    "git": "Git is a version control system that tracks code changes and enables collaboration.",
     "Android Studio": "Android Studio is the official IDE for Android app development.",
     "Flutter": "Flutter is a Google UI toolkit for building cross-platform apps with a single codebase.",
     "OOPs": "Object-Oriented Programming is a programming model based on classes and objects.",
@@ -373,8 +372,31 @@ const skillFallbacks = {
     "Material Design": "Material Design is Google’s design system for building visually consistent user interfaces."
 };
 
+// Map skills → correct Wikipedia page names (to avoid alphabet “C” etc.)
+const wikiPages = {
+    "C": "C_(programming_language)",
+    "C++": "C%2B%2B",
+    "Java": "Java_(programming_language)",
+    "Python": "Python_(programming_language)",
+    "Django": "Django_(web_framework)",
+    "Flask": "Flask_(web_framework)",
+    "Flutter": "Flutter_(software)",
+    "PHP": "PHP",
+    "HTML": "HTML",
+    "MySQL": "MySQL",
+    "git": "Git",
+    "PostGreSQL": "PostgreSQL",
+    "OracleDb": "Oracle_Database",
+    "Android Studio": "Android_Studio",
+    "Tailwind": "Tailwind_CSS",
+    "Bootstrap CSS": "Bootstrap_(front-end_framework)",
+    "Material Design": "Material_Design"
+};
+
 async function fetchSkillInfo(skill) {
-    const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(skill)}`;
+    // Use special page name if defined, otherwise encode the skill as normal
+    const page = wikiPages[skill] || encodeURIComponent(skill);
+    const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${page}`;
 
     try {
         const response = await fetch(url);
@@ -382,7 +404,6 @@ async function fetchSkillInfo(skill) {
 
         let text = data.extract || "";
 
-        // Detect if this is CS-related
         const techWords = [
             "programming", "software", "computer", "framework", "library",
             "language", "web", "developer", "database", "API", "IDE", "coding"
@@ -390,7 +411,7 @@ async function fetchSkillInfo(skill) {
 
         const isTech = techWords.some(word => text.toLowerCase().includes(word));
 
-        // If Wikipedia result is unrelated → use fallback
+        // If Wikipedia result looks unrelated → use fallback
         if (!isTech || text.length < 40) {
             return skillFallbacks[skill] || "No CS-related information found.";
         }
@@ -401,7 +422,6 @@ async function fetchSkillInfo(skill) {
         return skillFallbacks[skill] || "Failed to load information.";
     }
 }
-
 
 document.querySelectorAll(".skill").forEach(box => {
     box.addEventListener("click", async () => {
@@ -417,6 +437,7 @@ document.querySelectorAll(".skill").forEach(box => {
     });
 });
 </script>
+
 <!-- SKILL INFO MODAL -->
 <div id="skillModal"
      class="fixed inset-0 bg-black bg-opacity-70 hidden justify-center items-center z-50">
