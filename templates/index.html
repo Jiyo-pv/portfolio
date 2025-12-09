@@ -59,6 +59,13 @@
 </head>
 
 <body class="bg-gray-950 dark:bg-black text-gray-200">
+<!-- LOADING SCREEN -->
+<div id="loadingScreen" class="fixed inset-0 flex justify-center items-center bg-black z-[9999]">
+    <div class="text-center">
+        <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="mt-4 text-cyan-300 text-lg tracking-widest">Loading...</p>
+    </div>
+</div>
 
 <!-- VANTA BIRDS BACKGROUND -->
 <div id="vanta-bg"></div>
@@ -179,12 +186,21 @@
         <div class="col-md-6">
             <div class="glass neon-border p-5 rounded-xl">
                 <h3 class="text-xl text-cyan-300 font-semibold">RedTeam – Cyber Security Analyst</h3>
+                <button onclick="openPDFModal('/static/certificates/redteam.pdf')"
+            class="mt-4 bg-cyan-600 px-4 py-2 rounded-lg hover:bg-cyan-700">
+                View Certificate
+                 </button>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="glass neon-border p-5 rounded-xl">
                 <h3 class="text-xl text-cyan-300 font-semibold">Flutter Development Workshop</h3>
+                <button onclick="openPDFModal('/static/certificates/flutter.pdf')"
+        class="mt-4 bg-cyan-600 px-4 py-2 rounded-lg hover:bg-cyan-700">
+    View Certificate
+</button>
+
             </div>
         </div>
     </div>
@@ -435,6 +451,15 @@ document.querySelectorAll(".skill").forEach(box => {
         const info = await fetchSkillInfo(skill);
         document.getElementById("modalContent").textContent = info;
     });
+});
+</script>
+<script>
+window.addEventListener("load", () => {
+    const loader = document.getElementById("loadingScreen");
+    loader.style.opacity = "0";
+    loader.style.transition = "1s ease";
+
+    setTimeout(() => loader.style.display = "none", 600);
 });
 </script>
 
