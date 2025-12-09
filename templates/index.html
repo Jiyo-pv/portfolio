@@ -30,6 +30,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
+ /* Scanner animation */
+@keyframes scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+.animate-scan { animation: scan 1.3s infinite linear; }
+
+/* Slow spin */
+@keyframes spin-slow { 100% { transform: rotate(360deg); } }
+.animate-spin-slow { animation: spin-slow 2s linear infinite; }
+
+/* Glitch ring */
+.glitch-ring { position: relative; }
+.glitch-ring::before, .glitch-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 4px solid cyan;
+  border-radius: 50%;
+  filter: blur(3px);
+  opacity: 0.4;
+  animation: glitchRing 0.15s infinite;
+}
+@keyframes glitchRing {
+  0% { transform: translate(2px, -2px); opacity: 0.3; }
+  50% { transform: translate(-1px, 1px); opacity: 0.5; }
+  100% { transform: translate(1px, -1px); opacity: 0.4; }
+}
+
+/* Glitch loading text */
+.glitch-loading { position: relative; }
+.glitch-loading::before,
+.glitch-loading::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  opacity: 0.7;
+}
+.glitch-loading::before { color: #22d3ee; transform: translate(2px, -2px); }
+.glitch-loading::after  { color: #38bdf8; transform: translate(-2px, 2px); }
+
+
         .glass {
             background: rgba(255,255,255,0.06);
             backdrop-filter: blur(12px);
@@ -59,13 +101,37 @@
 </head>
 
 <body class="bg-gray-950 dark:bg-black text-gray-200">
-<!-- LOADING SCREEN -->
-<div id="loadingScreen" class="fixed inset-0 flex justify-center items-center bg-black z-[9999]">
-    <div class="text-center">
-        <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p class="mt-4 text-cyan-300 text-lg tracking-widest">Loading...</p>
+   <!-- ================== LOADER WRAPPER ================== -->
+<div id="loadingWrapper" class="fixed inset-0 bg-black z-[9999] flex justify-center items-center">
+
+    <!-- ===== LOADER A: Futuristic Scanner (with glitch) ===== -->
+    <div id="loaderA" class="flex flex-col justify-center items-center hidden">
+
+        <div class="glitch-ring">
+            <div class="ring w-32 h-32 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin-slow"></div>
+        </div>
+
+        <div class="relative w-48 h-2 mt-6 bg-gray-800 overflow-hidden rounded-full">
+            <div class="absolute inset-y-0 w-1/3 bg-cyan-400 animate-scan"></div>
+        </div>
+
+        <p class="mt-6 text-cyan-300 text-lg tracking-widest font-mono glitch-loading"
+           data-text="INITIALIZING SYSTEM…">
+           INITIALIZING SYSTEM…
+        </p>
     </div>
+
+    <!-- ===== LOADER C: Cyberpunk Terminal Boot (Typing) ===== -->
+    <div id="loaderC" class="font-mono text-cyan-300 text-lg hidden px-8 text-left">
+        <p class="type-line" data-line="> Booting system..."></p>
+        <p class="type-line" data-line="> Establishing secure connection..."></p>
+        <p class="type-line" data-line="> Loading assets..."></p>
+        <p class="type-line" data-line="> Preparing UI components..."></p>
+        <p class="type-line" data-line="> ACCESS GRANTED_"></p>
+    </div>
+
 </div>
+
 
 <!-- VANTA BIRDS BACKGROUND -->
 <div id="vanta-bg"></div>
@@ -453,15 +519,6 @@ document.querySelectorAll(".skill").forEach(box => {
     });
 });
 </script>
-<script>
-window.addEventListener("load", () => {
-    const loader = document.getElementById("loadingScreen");
-    loader.style.opacity = "0";
-    loader.style.transition = "1s ease";
-
-    setTimeout(() => loader.style.display = "none", 600);
-});
-</script>
 
 <!-- SKILL INFO MODAL -->
 <div id="skillModal"
@@ -513,6 +570,66 @@ function closePDFModal() {
     modal.classList.remove("flex");
 }
 </script>
+<script>
+// Close PDF modal with ESC key
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        closePDFModal();
+    }
+});
+</script>
+<script>
+// Choose randomly between Loader A and Loader C
+const loaders = ["loaderA", "loaderC"];
+let chosen = null;
+
+window.addEventListener("DOMContentLoaded", () => {
+    chosen = loaders[Math.floor(Math.random() * loaders.length)];
+    document.getElementById(chosen).classList.remove("hidden");
+
+    if (chosen === "loaderC") typeTerminal();
+});
+
+// Terminal typing effect (Loader C)
+function typeTerminal() {
+    const lines = document.querySelectorAll(".type-line");
+    let index = 0;
+
+    function typeLine() {
+        if (index >= lines.length) return;
+
+        let el = lines[index];
+        let text = el.getAttribute("data-line");
+        let pos = 0;
+
+        let typer = setInterval(() => {
+            el.textContent = text.substring(0, pos);
+            pos++;
+
+            if (pos > text.length) {
+                clearInterval(typer);
+                index++;
+                setTimeout(typeLine, 150);
+            }
+        }, 25);
+    }
+
+    typeLine();
+}
+
+window.addEventListener("load", () => {
+    const loader = document.getElementById("loadingWrapper");
+
+    // Keep loader visible for exactly 3 seconds
+    setTimeout(() => {
+        loader.style.opacity = "0";
+        loader.style.transition = "0.8s ease-out";
+
+        setTimeout(() => loader.style.display = "none", 800);
+    }, 3000);
+});
+</script>
+
 
 </body>
 <!-- FOOTER -->
