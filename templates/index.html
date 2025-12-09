@@ -477,6 +477,42 @@ window.addEventListener("load", () => {
         </button>
     </div>
 </div>
+<!-- PDF CERTIFICATE MODAL -->
+<div id="pdfModal"
+     class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center z-[9998] p-4">
+
+    <div class="glass neon-border rounded-2xl max-w-4xl w-full h-[85vh] relative p-4">
+
+        <button onclick="closePDFModal()"
+                class="absolute top-3 right-3 bg-red-600 px-3 py-1 rounded-lg hover:bg-red-700">
+            Close
+        </button>
+
+        <iframe id="pdfViewer"
+                src=""
+                class="w-full h-full rounded-xl border border-cyan-400">
+        </iframe>
+    </div>
+</div>
+<script>
+function openPDFModal(pdfPath) {
+    const modal = document.getElementById("pdfModal");
+    const viewer = document.getElementById("pdfViewer");
+
+    viewer.src = pdfPath;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+}
+
+function closePDFModal() {
+    const modal = document.getElementById("pdfModal");
+    const viewer = document.getElementById("pdfViewer");
+
+    viewer.src = ""; // stop loading when closed
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+}
+</script>
 
 </body>
 <!-- FOOTER -->
