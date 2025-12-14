@@ -2,7 +2,6 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="description" content="Portfolio of JIYO P V">
     <meta property="og:title" content="JIYO P V — Portfolio">
     <meta property="og:image" content="/static/images/preview.png">
@@ -30,7 +29,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
- /* Scanner animation */
+        .glass {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .neon-border {
+            border: 1px solid rgba(0,200,255,0.45);
+            box-shadow: 0 0 10px rgba(0,200,255,0.4);
+        }
+        .neon-text {
+            text-shadow: 0 0 10px cyan;
+        }
+
+        /* VANTA background container */
+        #vanta-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+        /* Scanner animation */
 @keyframes scan {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(300%); }
@@ -71,28 +90,14 @@
 .glitch-loading::before { color: #22d3ee; transform: translate(2px, -2px); }
 .glitch-loading::after  { color: #38bdf8; transform: translate(-2px, 2px); }
 
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.float-avatar {
+  animation: float 4s ease-in-out infinite;
+}
 
-        .glass {
-            background: rgba(255,255,255,0.06);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.12);
-        }
-        .neon-border {
-            border: 1px solid rgba(0,200,255,0.45);
-            box-shadow: 0 0 10px rgba(0,200,255,0.4);
-        }
-        .neon-text {
-            text-shadow: 0 0 10px cyan;
-        }
-
-        /* VANTA background container */
-        #vanta-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-        }
-        
     </style>
 
     <script>
@@ -102,7 +107,7 @@
 </head>
 
 <body class="bg-gray-950 dark:bg-black text-gray-200">
-   <!-- ================== LOADER WRAPPER ================== -->
+<!-- ================== LOADER WRAPPER ================== -->
 <div id="loadingWrapper" class="fixed inset-0 bg-black z-[9999] flex justify-center items-center">
 
     <!-- ===== LOADER A: Futuristic Scanner (with glitch) ===== -->
@@ -116,19 +121,20 @@
             <div class="absolute inset-y-0 w-1/3 bg-cyan-400 animate-scan"></div>
         </div>
 
-        <p class="mt-6 text-cyan-300 text-lg tracking-widest font-mono glitch-loading"
-           data-text="INITIALIZING SYSTEM…">
-           INITIALIZING SYSTEM…
+        <p id="loaderStatus" class="mt-6 text-cyan-300 text-lg tracking-widest font-mono glitch-loading"
+           data-text=" LOADING PORTFOLIO…">
+          LOADING PORTFOLIO…
         </p>
     </div>
 
     <!-- ===== LOADER C: Cyberpunk Terminal Boot (Typing) ===== -->
     <div id="loaderC" class="font-mono text-cyan-300 text-lg hidden px-8 text-left">
-        <p class="type-line" data-line="> Booting system..."></p>
-        <p class="type-line" data-line="> Establishing secure connection..."></p>
-        <p class="type-line" data-line="> Loading assets..."></p>
-        <p class="type-line" data-line="> Preparing UI components..."></p>
-        <p class="type-line" data-line="> ACCESS GRANTED_"></p>
+        <p class="type-line" data-line="> Loading Portfolio..."></p>
+    <p class="type-line" data-line="> Fetching projects & skills..."></p>
+<p class="type-line" data-line="> Initializing UI animations..."></p>
+<p class="type-line" data-line="> Almost there..."></p>
+<p class="type-line" data-line="> WELCOME 👋"></p>
+
     </div>
 
 </div>
@@ -171,7 +177,7 @@
 <section class="max-w-5xl mx-auto px-5 pt-36 pb-20 text-center" data-aos="fade-up">
     <div class="flex justify-center mb-6">
         <img src="{{ url_for('static', filename='images/avatar.png') }}"
-             class="w-40 h-40 rounded-full border-4 border-cyan-400 shadow-xl object-cover"/>
+             class="w-40 h-40 rounded-full border-4 border-cyan-400 shadow-xl object-cover float-avatar"/>
     </div>
 
     <h1 class="text-4xl md:text-5xl font-bold text-cyan-300 neon-text mb-4">
@@ -197,11 +203,43 @@
 
 <!-- ABOUT -->
 <section id="about" class="max-w-5xl mx-auto px-5 py-12" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-4 border-b border-gray-700 pb-2">About Me</h2>
-    <div class="glass neon-border p-6 rounded-2xl">
-        <p>Passionate MCA student with strong skills in web development, app development, databases, and UI/UX.</p>
+  <h2 class="text-3xl font-semibold mb-4 border-b border-gray-700 pb-2">
+    About Me
+  </h2>
+
+  <div class="glass neon-border rounded-2xl overflow-hidden font-mono text-sm">
+
+    <!-- Header -->
+    <div class="flex items-center gap-2 px-4 py-2 bg-black/70 border-b border-gray-700">
+      <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+      <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+      <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+      <span class="ml-3 text-gray-400 text-xs">jiyo@portfolio:~</span>
     </div>
+
+    <!-- Output -->
+    <div id="terminalOutput"
+         class="px-4 py-4 text-gray-300 space-y-2 h-80 overflow-y-auto">
+    </div>
+
+    <!-- Input -->
+    <div class="flex items-center px-4 py-3 bg-black/80 border-t border-gray-700">
+      <span class="text-cyan-400 mr-2">$</span>
+      <input
+        id="terminalInput"
+        type="text"
+        class="bg-transparent outline-none w-full text-gray-200 placeholder-gray-500"
+        placeholder="type a command…"
+        autocomplete="off"
+      />
+      <span class="ml-1 text-cyan-400 animate-pulse">▊</span>
+    </div>
+
+  </div>
 </section>
+
+
+
 
 <!-- SKILLS -->
 <section id="skills" class="max-w-5xl mx-auto px-5 py-12" data-aos="fade-up">
@@ -253,10 +291,10 @@
         <div class="col-md-6">
             <div class="glass neon-border p-5 rounded-xl">
                 <h3 class="text-xl text-cyan-300 font-semibold">RedTeam – Cyber Security Analyst</h3>
-                <button onclick="openPDFModal('/static/certificates/redteam.pdf')"
+                 <button onclick="openPDFModal('/static/certificates/redteam.pdf')"
             class="mt-4 bg-cyan-600 px-4 py-2 rounded-lg hover:bg-cyan-700">
-                View Certificate
-                 </button>
+        View Certificate
+    </button>
             </div>
         </div>
 
@@ -282,11 +320,11 @@
         <!-- Project 1 -->
         <div class="col-md-6">
             <div class="glass neon-border p-5 rounded-2xl shadow-xl hover:scale-[1.04] transition">
-                
+
                 <img src="{{ url_for('static', filename='images/project1.png') }}" class="rounded-xl mb-3"/>
-                
+
                 <h3 class="text-xl font-bold text-cyan-300">Library Network System</h3>
-                
+
                 <p class="text-gray-300 mt-2 text-sm">
                     Django + Android system for browsing & managing books.
                 </p>
@@ -302,11 +340,11 @@
         <!-- Project 2 -->
         <div class="col-md-6">
             <div class="glass neon-border p-5 rounded-2xl shadow-xl hover:scale-[1.04] transition">
-                
+
                 <img src="{{ url_for('static', filename='images/project2.png') }}" class="rounded-xl mb-3"/>
-                
+
                 <h3 class="text-xl font-bold text-cyan-300">Video Game Store</h3>
-                
+
                 <p class="text-gray-300 mt-2 text-sm">
                     E-commerce system built using PHP and AJAX requests.
                 </p>
@@ -325,6 +363,17 @@
 
 <!-- CONTACT -->
 <section id="contact" class="max-w-5xl mx-auto px-5 py-16 text-center" data-aos="fade-up">
+    <div class="flex justify-center gap-2 mt-3 text-xs">
+  <span class="px-3 py-1 rounded-full bg-green-900/40 text-green-300 border border-green-500/40">
+    ● Available for Internships
+
+  </span>
+  <span class="px-3 py-1 rounded-full bg-green-900/40 text-green-300 border border-green-500/40">
+
+    ●Open to Opportunities
+  </span>
+</div>
+
     <h2 class="text-3xl font-semibold mb-6">Contact Me</h2>
 
     <form action="https://formsubmit.co/jiyopv21@gmail.com"
@@ -333,7 +382,7 @@
 
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_next" value="http://localhost:5000/success">
+        <input type="hidden" name="_next" value="https://jiyo2025.pythonanywhere.com/success">
 
         <input name="name" placeholder="Your Name" required class="w-full p-3 mb-3 bg-gray-900 border border-gray-700 rounded-lg"/>
 
@@ -374,53 +423,72 @@ if (!isMobile) {
 }
 </script>
 
-
 <!-- GSAP SCRAMBLE TEXT ANIMATION -->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+const chars = "!<>-_\\/[]{}—=+*^?#________";
 
-    const chars = "!<>-_\\/[]{}—=+*^?#________";
+function scrambleText(element, finalText, speed, delay, glow = false) {
+    setTimeout(() => {
+        let frame = 0;
+        const total = finalText.length;
+        const maxFrames = total * 2; // controls scramble intensity
 
-    function scrambleText(element, finalText, speed, delay, glow = false) {
-        setTimeout(() => {
-            let reveal = 0;
-            const total = finalText.length;
+        const interval = setInterval(() => {
+            element.textContent = finalText
+                .split("")
+                .map((char, i) => {
+                    if (frame > i * 2) return char;
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join("");
 
-            const interval = setInterval(() => {
-                reveal++;
+            frame++;
 
-                element.textContent = finalText
-                    .split("")
-                    .map((char, i) =>
-                        i < reveal ? char : chars[Math.floor(Math.random() * chars.length)]
-                    )
-                    .join("");
+            if (frame > maxFrames) {
+                clearInterval(interval);
+                element.textContent = finalText;
 
-                if (reveal >= total) {
-                    clearInterval(interval);
-
-                    if (glow) {
-                        gsap.to(element, {
-                            textShadow: "0 0 25px cyan",
-                            duration: 1.5,
-                            repeat: -1,
-                            yoyo: true,
-                            ease: "power1.inOut"
-                        });
-                    }
+                if (glow) {
+                    gsap.to(element, {
+                        textShadow: "0 0 25px cyan",
+                        duration: 2,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "power1.inOut"
+                    });
                 }
-            }, speed);
-        }, delay);
-    }
+            }
+        }, speed);
+    }, delay);
+}
+</script>
 
-    scrambleText(document.getElementById("heroTitle"),
-        "Hi, I'm Jiyo", 55, 1300, true);
 
-    scrambleText(document.getElementById("heroSubtitle"),
+<script>
+window.addEventListener("loaderDone", () => {
+    const title = document.getElementById("heroTitle");
+    const subtitle = document.getElementById("heroSubtitle");
+
+
+    scrambleText(
+        title,
+        "Hi, I'm Jiyo",
+        55,
+        100,
+        true
+    );
+
+    scrambleText(
+        subtitle,
         "MCA Student • Python • Django • Java • Android Developer • Web Developer",
-        15, 1500, false);
+        15,
+        200,
+        false
+    );
 });
 </script>
+
+
 <script>
 function openModal() {
     const modal = document.getElementById("skillModal");
@@ -524,12 +592,12 @@ document.querySelectorAll(".skill").forEach(box => {
 <!-- SKILL INFO MODAL -->
 <div id="skillModal"
      class="fixed inset-0 bg-black bg-opacity-70 hidden justify-center items-center z-50">
-    
+
     <div class="glass neon-border p-6 rounded-2xl max-w-lg text-center">
         <h2 id="modalTitle" class="text-2xl font-bold text-cyan-300 mb-3"></h2>
         <p id="modalContent" class="text-gray-300 text-sm leading-relaxed"></p>
 
-        <button onclick="closeModal()" 
+        <button onclick="closeModal()"
                 class="mt-6 px-6 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-xl">
             Close
         </button>
@@ -579,6 +647,7 @@ document.addEventListener("keydown", (e) => {
     }
 });
 </script>
+
 <script>
 // Choose randomly between Loader A and Loader C
 const loaders = ["loaderA", "loaderC"];
@@ -622,15 +691,213 @@ window.addEventListener("load", () => {
     const loader = document.getElementById("loadingWrapper");
 
     // Keep loader visible for exactly 3 seconds
-    setTimeout(() => {
-        loader.style.opacity = "0";
-        loader.style.transition = "0.8s ease-out";
+  setTimeout(() => {
+    loader.style.opacity = "0";
+    loader.style.transition = "0.8s ease-out";
 
-        setTimeout(() => loader.style.display = "none", 800);
-    }, 3000);
+    setTimeout(() => {
+        loader.style.display = "none";
+        window.dispatchEvent(new Event("loaderDone"));
+    }, 800);
+}, 2500);
+
 });
 </script>
+<script>
+const loaderTexts = [
+  "LOADING PORTFOLIO…",
+  "FETCHING PROJECTS…",
+  "INITIALIZING EXPERIENCE…"
+];
 
+let loaderIndex = 0;
+setInterval(() => {
+    const el = document.getElementById("loaderStatus");
+    if (!el) return;
+    el.textContent = loaderTexts[loaderIndex % loaderTexts.length];
+    el.setAttribute("data-text", loaderTexts[loaderIndex % loaderTexts.length]);
+    loaderIndex++;
+}, 900);
+</script>
+<script>
+window.addEventListener("scroll", () => {
+  const glow = Math.min(window.scrollY / 600, 1);
+  document.documentElement.style.setProperty(
+    "--tw-shadow-color",
+    `rgba(34,211,238,${0.3 + glow * 0.3})`
+  );
+});
+</script>
+<script>
+var terminalLines = document.querySelectorAll("#aboutTerminal p");
+terminalLines.forEach(line => line.style.display = "none");
+
+let lineIndex = 0;
+
+function typeTerminalAbout() {
+  if (lineIndex >= terminalLines.length) return;
+  terminalLines[lineIndex].style.display = "block";
+  lineIndex++;
+  setTimeout(typeTerminalAbout, 250);
+}
+
+window.addEventListener("loaderDone", typeTerminalAbout);
+</script>
+<script>
+const terminalInput = document.getElementById("terminalInput");
+const terminalOutput = document.getElementById("terminalOutput");
+const projectsSection = document.getElementById("projects");
+
+terminalInput.disabled = true;
+
+/* COMMANDS */
+const commands = {
+  help: `
+Available commands:
+• whoami
+• uname -a
+• pwd
+• ls
+• cat about.txt
+• cat skills.txt
+• cat status.txt
+• echo $GOAL
+• cd projects
+• cd certificates
+• cat resume.pdf
+• clear
+
+
+`,
+  "whoami": "jiyo — MCA student & full-stack developer",
+  "uname -a": "Linux portfolio 6.1.0 x86_64 GNU/Linux",
+  pwd: "/home/jiyo/portfolio",
+  ls: "about.txt  skills.txt  projects/  certifications/  resume.pdf",
+  "cat about.txt":
+    "Passionate MCA student focused on web, mobile, and backend development.\nEnjoys building clean UI, scalable systems, and learning new technologies.",
+  "cat skills.txt":
+    "Python, Django, Java, Android, Flask, MySQL, Web Development",
+  "cat status.txt":
+    "🟢 Available for internships\n🟢 Open to opportunities",
+  "echo $GOAL":
+    "Build impactful software and grow as a full-stack engineer 🚀",
+  "cd projects": "__PROJECTS__",
+  "cd certificates": "__CERTIFICATES__",
+  "cat resume.pdf": "__RESUME__",
+  clear: "__CLEAR__",
+
+  /* Easter eggs */
+  "sudo hire-me": "currently available .visit contacts section to connect",
+  "man jiyo": "jiyo(1) — developer, problem solver, lifelong learner"
+};
+
+/* PRINT */
+function printLine(text, isCommand = false) {
+  const line = document.createElement("p");
+  line.innerHTML = isCommand
+    ? `<span class="text-cyan-400">$</span> ${text}`
+    : text.replace(/\n/g, "<br>");
+  terminalOutput.appendChild(line);
+  terminalOutput.scrollTop = terminalOutput.scrollHeight;
+}
+
+/* BOOT SEQUENCE */
+const bootSequence = [
+  { cmd: null, out: "Welcome to Jiyo's terminal 👋" },
+  { cmd: "whoami", out: commands["whoami"] },
+  { cmd: "cat status.txt", out: commands["cat status.txt"] }
+];
+
+let bootIndex = 0;
+
+function runBootSequence() {
+  if (bootIndex >= bootSequence.length) {
+    printLine("<span class='text-cyan-400'>$</span> Ready. Type <b>help</b>.");
+    terminalInput.disabled = false;
+    terminalInput.focus();
+    return;
+  }
+
+  const step = bootSequence[bootIndex];
+  if (step.cmd) printLine(step.cmd, true);
+  printLine(step.out);
+
+  bootIndex++;
+  setTimeout(runBootSequence, 420);
+}
+
+window.addEventListener("loaderDone", runBootSequence);
+
+/* COMMAND HISTORY */
+let history = [];
+let historyIndex = -1;
+
+/* INPUT HANDLER */
+terminalInput.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") {
+    if (history.length && historyIndex > 0) {
+      historyIndex--;
+      terminalInput.value = history[historyIndex];
+    }
+    return;
+  }
+
+  if (e.key === "ArrowDown") {
+    if (historyIndex < history.length - 1) {
+      historyIndex++;
+      terminalInput.value = history[historyIndex];
+    } else {
+      terminalInput.value = "";
+    }
+    return;
+  }
+
+  if (e.key !== "Enter") return;
+
+  const input = terminalInput.value.trim();
+  if (!input) return;
+
+  history.push(input);
+  historyIndex = history.length;
+
+  printLine(input, true);
+
+  if (commands[input]) {
+    const action = commands[input];
+
+    if (action === "__CLEAR__") {
+      terminalOutput.innerHTML = "";
+    }
+    else if (action === "__PROJECTS__") {
+      printLine("Navigating to projects… 🚀");
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
+    else if (action === "__CERTIFICATES__") {
+  printLine("Entering certifications directory… 📂");
+  document
+    .getElementById("certifications")
+    .scrollIntoView({ behavior: "smooth" });
+}
+
+    else if (action === "__RESUME__") {
+      printLine("Opening resume.pdf…");
+      window.open("/download-resume", "_blank");
+    }
+    else {
+      printLine(action);
+    }
+  } else {
+    printLine(`command not found: ${input}`);
+  }
+
+  terminalInput.value = "";
+});
+
+/* MOBILE TAP TO FOCUS */
+terminalOutput.addEventListener("click", () => {
+  terminalInput.focus();
+});
+</script>
 
 </body>
 <!-- FOOTER -->
