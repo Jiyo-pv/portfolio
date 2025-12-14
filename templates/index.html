@@ -29,6 +29,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
+   html.no-scroll,
+body.no-scroll {
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  overscroll-behavior: none;
+}
+
         .glass {
             background: rgba(255,255,255,0.06);
             backdrop-filter: blur(12px);
@@ -96,6 +105,16 @@
 }
 .float-avatar {
   animation: float 4s ease-in-out infinite;
+}
+
+
+  .terminal-fullscreen #terminalOutput {
+    height: calc(100vh - 110px) !important;
+  }
+}
+#about {
+  position: relative;
+  z-index: 1;
 }
 
     </style>
@@ -210,12 +229,16 @@
   <div class="glass neon-border rounded-2xl overflow-hidden font-mono text-sm">
 
     <!-- Header -->
-    <div class="flex items-center gap-2 px-4 py-2 bg-black/70 border-b border-gray-700">
-      <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-      <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
-      <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-      <span class="ml-3 text-gray-400 text-xs">jiyo@portfolio:~</span>
-    </div>
+    <div class="flex items-center justify-between px-4 py-2 bg-black/70 border-b border-gray-700">
+  <div class="flex items-center gap-2">
+    <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+    <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+    <span class="ml-3 text-gray-400 text-xs">jiyo@portfolio:~</span>
+  </div>
+
+  
+</div>
 
     <!-- Output -->
     <div id="terminalOutput"
@@ -401,11 +424,16 @@
 <!-- THREE.JS + VANTA BIRDS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.birds.min.js"></script>
+<script>
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+</script>
 
 <script>
-const isMobile = window.innerWidth < 768;
 
-if (!isMobile) {
+
+if (!isMobile()) {
     // Desktop → Load Birds + Three.js
     VANTA.BIRDS({
         el: "#vanta-bg",
@@ -728,21 +756,7 @@ window.addEventListener("scroll", () => {
   );
 });
 </script>
-<script>
-var terminalLines = document.querySelectorAll("#aboutTerminal p");
-terminalLines.forEach(line => line.style.display = "none");
 
-let lineIndex = 0;
-
-function typeTerminalAbout() {
-  if (lineIndex >= terminalLines.length) return;
-  terminalLines[lineIndex].style.display = "block";
-  lineIndex++;
-  setTimeout(typeTerminalAbout, 250);
-}
-
-window.addEventListener("loaderDone", typeTerminalAbout);
-</script>
 <script>
 const terminalInput = document.getElementById("terminalInput");
 const terminalOutput = document.getElementById("terminalOutput");
@@ -896,7 +910,11 @@ terminalInput.addEventListener("keydown", (e) => {
 /* MOBILE TAP TO FOCUS */
 terminalOutput.addEventListener("click", () => {
   terminalInput.focus();
+  
 });
+
+
+
 </script>
 
 </body>
