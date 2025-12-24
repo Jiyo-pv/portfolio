@@ -112,9 +112,44 @@ body.no-scroll {
     height: calc(100vh - 110px) !important;
   }
 }
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,200,255,.4);
+  color: #67e8f9;
+  font-size: 12px;
+  transition: 0.2s;
+}
+
+.filter-btn:hover {
+  background: rgba(0,200,255,.15);
+}
+
+.filter-btn.active {
+  background: #22d3ee;
+  color: #020617;
+}
+
 #about {
   position: relative;
   z-index: 1;
+}
+.skeleton {
+  height: 80px;
+  border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.06)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
     </style>
@@ -179,7 +214,7 @@ body.no-scroll {
         <span onclick="toggleMenu()" class="material-icons text-cyan-300 cursor-pointer">menu</span>
     </div>
 
-    <span onclick="toggleTheme()" class="hidden md:block material-icons text-cyan-300 cursor-pointer">dark_mode</span>
+
 </nav>
 
 <!-- MOBILE MENU -->
@@ -237,7 +272,7 @@ body.no-scroll {
     <span class="ml-3 text-gray-400 text-xs">jiyo@portfolio:~</span>
   </div>
 
-  
+
 </div>
 
     <!-- Output -->
@@ -252,7 +287,8 @@ body.no-scroll {
         id="terminalInput"
         type="text"
         class="bg-transparent outline-none w-full text-gray-200 placeholder-gray-500"
-        placeholder="type a command…"
+       placeholder='type "help" or press Tab to autocomplete'
+
         autocomplete="off"
       />
       <span class="ml-1 text-cyan-400 animate-pulse">▊</span>
@@ -384,6 +420,7 @@ body.no-scroll {
 </section>
 
 
+
 <!-- CONTACT -->
 <section id="contact" class="max-w-5xl mx-auto px-5 py-16 text-center" data-aos="fade-up">
     <div class="flex justify-center gap-2 mt-3 text-xs">
@@ -506,13 +543,7 @@ window.addEventListener("loaderDone", () => {
         true
     );
 
-    scrambleText(
-        subtitle,
-        "MCA Student • Python • Django • Java • Android Developer • Web Developer",
-        15,
-        200,
-        false
-    );
+
 });
 </script>
 
@@ -780,8 +811,6 @@ Available commands:
 • cd certificates
 • cat resume.pdf
 • clear
-
-
 `,
   "whoami": "jiyo — MCA student & full-stack developer",
   "uname -a": "Linux portfolio 6.1.0 x86_64 GNU/Linux",
@@ -804,6 +833,8 @@ Available commands:
   "sudo hire-me": "currently available .visit contacts section to connect",
   "man jiyo": "jiyo(1) — developer, problem solver, lifelong learner"
 };
+const autocompleteCommands = Object.keys(commands);
+let autocompleteIndex = 0;
 
 /* PRINT */
 function printLine(text, isCommand = false) {
@@ -817,7 +848,7 @@ function printLine(text, isCommand = false) {
 
 /* BOOT SEQUENCE */
 const bootSequence = [
-  { cmd: null, out: "Welcome to Jiyo's terminal 👋" },
+  { cmd: null, out: "Welcome to My terminal" },
   { cmd: "whoami", out: commands["whoami"] },
   { cmd: "cat status.txt", out: commands["cat status.txt"] }
 ];
@@ -828,7 +859,7 @@ function runBootSequence() {
   if (bootIndex >= bootSequence.length) {
     printLine("<span class='text-cyan-400'>$</span> Ready. Type <b>help</b>.");
     terminalInput.disabled = false;
-    terminalInput.focus();
+
     return;
   }
 
@@ -847,6 +878,10 @@ let history = [];
 let historyIndex = -1;
 
 /* INPUT HANDLER */
+terminalInput.addEventListener("input", () => {
+  autocompleteIndex = 0;
+});
+
 terminalInput.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp") {
     if (history.length && historyIndex > 0) {
@@ -855,6 +890,24 @@ terminalInput.addEventListener("keydown", (e) => {
     }
     return;
   }
+if (e.key === "Tab") {
+  e.preventDefault();
+
+  const value = terminalInput.value.trim();
+  if (!value) return;
+
+  const matches = autocompleteCommands.filter(cmd =>
+    cmd.startsWith(value)
+  );
+
+  if (!matches.length) return;
+
+  terminalInput.value =
+    matches[autocompleteIndex % matches.length];
+
+  autocompleteIndex++;
+  return;
+}
 
   if (e.key === "ArrowDown") {
     if (historyIndex < history.length - 1) {
@@ -893,6 +946,8 @@ terminalInput.addEventListener("keydown", (e) => {
     .scrollIntoView({ behavior: "smooth" });
 }
 
+
+
     else if (action === "__RESUME__") {
       printLine("Opening resume.pdf…");
       window.open("/download-resume", "_blank");
@@ -910,7 +965,7 @@ terminalInput.addEventListener("keydown", (e) => {
 /* MOBILE TAP TO FOCUS */
 terminalOutput.addEventListener("click", () => {
   terminalInput.focus();
-  
+
 });
 
 
@@ -918,6 +973,8 @@ terminalOutput.addEventListener("click", () => {
 </script>
 
 </body>
+
+
 <!-- FOOTER -->
 <footer class="mt-20 py-6 glass neon-border text-center text-gray-300">
     <p class="text-sm">© {{ current_year }} Jiyo P V — All Rights Reserved</p>
