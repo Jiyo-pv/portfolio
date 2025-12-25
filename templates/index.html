@@ -29,6 +29,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
+    .ai-suggest {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,200,255,.4);
+  color: #67e8f9;
+  transition: 0.2s;
+}
+
+.ai-suggest:hover {
+  background: rgba(0,200,255,.15);
+}
+#aiMessages a {
+  color: #22d3ee;
+  text-decoration: underline;
+}
+#aiMessages a:hover {
+  color: #67e8f9;
+}
+
    html.no-scroll,
 body.no-scroll {
   height: 100%;
@@ -468,6 +487,10 @@ function isMobile() {
 </script>
 
 <script>
+window.addEventListener("scroll", () => {
+  const bg = document.getElementById("vanta-bg");
+  bg.style.opacity = window.scrollY > 300 ? "0.3" : "1";
+});
 
 
 if (!isMobile()) {
@@ -480,7 +503,7 @@ if (!isMobile()) {
         backgroundColor: 0x020617,
         color1: 0x22d3ee,
         color2: 0x38bdf8,
-        quantity: 4
+        quantity: 2
     });
 } else {
     // Mobile → Disable animated background
@@ -803,6 +826,7 @@ Available commands:
 • uname -a
 • pwd
 • ls
+• chat
 • cat about.txt
 • cat skills.txt
 • cat status.txt
@@ -811,7 +835,7 @@ Available commands:
 • cd certificates
 • cat resume.pdf
 • clear
-`,
+`,"chat": "__CHAT__",
   "whoami": "jiyo — MCA student & full-stack developer",
   "uname -a": "Linux portfolio 6.1.0 x86_64 GNU/Linux",
   pwd: "/home/jiyo/portfolio",
@@ -945,6 +969,11 @@ if (e.key === "Tab") {
     .getElementById("certifications")
     .scrollIntoView({ behavior: "smooth" });
 }
+    else if (action === "__CHAT__") {
+  printLine("Opening AI chat… 🤖");
+  document.getElementById("aiChatBox").classList.remove("hidden");
+  document.getElementById("aiInput").focus();
+}
 
 
 
@@ -971,8 +1000,144 @@ terminalOutput.addEventListener("click", () => {
 
 
 </script>
+<!-- AI CHAT WIDGET -->
+<div id="aiChatBtn"
+     class="fixed bottom-6 right-6 bg-cyan-600 text-black px-4 py-3 rounded-full shadow-lg cursor-pointer hover:bg-cyan-500 z-50">
+  Chat with my AI
+</div>
+
+<div id="aiChatBox"
+     class="hidden fixed bottom-24 right-6 w-80 max-w-[90vw] h-[420px] glass neon-border rounded-2xl flex flex-col z-50">
+
+  <!-- Header -->
+<div class="px-4 py-3 border-b border-gray-700 text-cyan-300 font-semibold
+            flex justify-between sticky top-0 bg-black/80 z-10">
+
+    <span>Chat with my AI</span>
+    <button onclick="toggleChat()" class="text-gray-400 hover:text-red-400">✕</button>
+  </div>
+
+  <!-- Messages -->
+  <div id="aiMessages"
+       class="flex-1 p-4 space-y-3 text-sm overflow-y-auto">
+    <p class="text-gray-400">
+      Ask me about Jiyo’s skills, projects, education, or contact details.
+    </p>
+  </div>
+
+  <!-- Suggestions -->
+  <div class="px-4 py-2 flex flex-wrap gap-2 text-xs">
+    <button class="ai-suggest" onclick="fillSuggestion('What are your projects?')">Projects</button>
+    <button class="ai-suggest" onclick="fillSuggestion('What skills do you have?')">Skills</button>
+    <button class="ai-suggest" onclick="fillSuggestion('How can I contact you?')">Contact</button>
+  </div>
+
+  <!-- Input -->
+  <div class="flex items-center border-t border-gray-700 px-3 py-2">
+    <input id="aiInput"
+           class="flex-1 bg-transparent outline-none text-gray-200 text-sm"
+           placeholder="Type a message…" />
+    <button onclick="sendMessage()"
+            class="ml-2 text-cyan-300 hover:text-cyan-200">
+      Send
+    </button>
+  </div>
+</div>
 
 </body>
+<script>
+const chatBtn = document.getElementById("aiChatBtn");
+const chatBox = document.getElementById("aiChatBox");
+const messages = document.getElementById("aiMessages");
+const input = document.getElementById("aiInput");
+
+chatBtn.addEventListener("click", toggleChat);
+
+function toggleChat() {
+  chatBox.classList.toggle("hidden");
+  if (!chatBox.classList.contains("hidden")) {
+    input.focus();
+  }
+}
+
+function fillSuggestion(text) {
+  input.value = text;
+  input.focus();
+}
+
+function addMessage(text, fromUser = false, typing = false) {
+  const msg = document.createElement("div");
+  msg.className = fromUser
+    ? "text-right text-cyan-300"
+    : "text-gray-300";
+
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
+
+  // ✅ If message contains HTML, render instantly (no typing)
+  if (text.includes("<a") || text.includes("</")) {
+    msg.innerHTML = text;
+    return;
+  }
+
+  if (!typing) {
+    msg.textContent = text;
+    return;
+  }
+
+  let i = 0;
+  const interval = setInterval(() => {
+    msg.textContent += text[i];
+    i++;
+    messages.scrollTop = messages.scrollHeight;
+    if (i >= text.length) clearInterval(interval);
+  }, 18);
+}
+
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, true);
+  input.value = "";
+
+  addMessage("Thinking…");
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await res.json();
+    messages.lastChild.remove(); // remove "Thinking…"
+    addMessage(data.reply || "No response.", false, true);
+    if (data.scrollTo) {
+  setTimeout(() => {
+    const section = document.getElementById(data.scrollTo);
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  }, 600);
+}
+
+
+  } catch {
+    messages.lastChild.remove();
+    addMessage("Something went wrong. Please try again.");
+  }
+}
+
+// Send on Enter
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter") sendMessage();
+});
+</script>
 
 
 <!-- FOOTER -->
